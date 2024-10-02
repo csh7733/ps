@@ -1,29 +1,21 @@
 class Solution {
     public long[] solution(long[] numbers) {
         long[] answer = new long[numbers.length];
-        int index = 0;
+        int idx = 0;
         for(long n : numbers){
-            String s = Long.toBinaryString(n);
-            s = "0" + s;
-            StringBuilder sb = new StringBuilder(s);
-            for(int i=s.length()-1;i>=0;i--){
-                if(sb.charAt(i) == '0'){
-                    if(i == s.length()-1) {
-                        sb.setCharAt(i,'1');
-                    }else{
-                        sb.setCharAt(i,'1');
-                        sb.setCharAt(i+1,'0');
-                    }
+            int index = 0;
+            for(int i=0;;i++){
+                if((n&(1L<<i)) == 0){
+                    index = i;
                     break;
                 }
             }
-            long temp = 0;
-            long offset = 1;
-            for(int i=sb.length()-1;i>=0;i--){
-                if(sb.charAt(i) == '1') temp += offset;
-                offset *= 2;
+            if(index == 0) n |= 1;
+            else{
+                n |= (1L<<index);
+                n &= ~(1L<<(index-1));
             }
-            answer[index++] = temp;
+            answer[idx++] = n;
         }
         return answer;
     }
